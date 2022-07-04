@@ -1,0 +1,87 @@
+import java.util.ArrayDeque;
+import java.util.Queue;
+import java.util.Scanner;
+
+public class Main{
+    
+    public static class Pair {
+        int i;
+        String psf;
+
+        Pair() {
+
+        }
+
+        Pair(int i, String psf) {
+            this.i = i;
+            this.psf = psf;
+        }
+    }
+    
+    
+    public static void Solution(int nums[]){
+        int n=nums.length;
+        int dp[]=new int[n];
+        for(int i=n-1;i>=0;i--){
+            if(i==n-1){
+                continue;
+            }
+            int min=search(i,nums[i],dp,n);
+            // System.out.println("min"+" " +min);
+            dp[i]=min;
+        }
+        
+        System.out.println(dp[0]); 
+        printAllPaths(nums,dp);
+        
+    }
+    
+    public static void printAllPaths(int[] arr,int[] dp){
+        ArrayDeque < Pair > q = new ArrayDeque < > ();
+        int n=dp.length;
+        Pair first=new Pair(0,"0");
+        q.add(first);
+        while(q.size()>0){
+            Pair tmp=q.remove();
+            int i=tmp.i;
+            if(i==n-1){
+                System.out.println(tmp.psf+" .");
+                continue;
+            }
+            for(int j=1;j<=arr[i]&&i+j<n;j++){
+                if(dp[i+j]==dp[i]-1){
+                    q.add(new Pair(i+j,tmp.psf+" -> "+(i+j)));
+                }
+            }
+        }
+
+    }
+    
+    public static int search(int idx,int jump,int[] dp,int n){
+        // System.out.println(jump);
+        if(jump==0)return 0;
+        int min=Integer.MAX_VALUE;
+        while(jump>0){
+            if((idx+jump)==n-1){
+                return 1;
+            }
+            if((idx+jump)<n-1&&dp[idx+jump]!=0){
+                min=Math.min(min,dp[idx+jump]);
+            }
+            jump-=1;
+        }
+        if(min==Integer.MAX_VALUE)return 0;
+        return min+1;
+    }
+    public static void main(String []args){
+        Scanner scn = new Scanner(System.in);
+        int n = scn.nextInt();
+
+        int arr[] = new int[n];
+        for(int i = 0 ; i < n ; i++)
+            arr[i] = scn.nextInt();
+
+        Solution(arr);
+        scn.close();
+    }
+}
