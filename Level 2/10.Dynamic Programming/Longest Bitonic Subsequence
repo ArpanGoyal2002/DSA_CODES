@@ -1,0 +1,63 @@
+import java.io.*;
+import java.util.*;
+
+public class Main {
+
+    public static int LongestBitonicSequence(int[] nums)
+    {
+        int dp1[]=LIS(nums);
+        int dp2[]=LDS(nums);
+        int i=0,j=nums.length-1;
+        int max=0;
+        while(i<nums.length){
+            max=Math.max(dp1[i]+dp2[i],max);
+            i++;
+        }
+        return max-1;
+    }
+    
+    public static int[] LIS(int[] nums){
+        int n=nums.length;
+        int dp[]=new int[n];
+        for(int i=0;i<n;i++){
+            int max=0;
+            for(int j=i-1;j>=0;j--){
+                if(nums[j]<nums[i]){
+                    max=Math.max(max,dp[j]);
+                }
+            }
+            dp[i]=max+1;
+        }
+        return dp;
+    }
+    
+    public static int[] LDS(int[] nums){
+        int n=nums.length;
+        int dp[]=new int[n];
+        for(int i=n-1;i>=0;i--){
+            int max=0;
+            for(int j=i+1;j<n;j++){
+                if(nums[j]<nums[i]){
+                    max=Math.max(max,dp[j]);
+                }
+            }
+            dp[i]=max+1;
+        }
+        return dp;
+    }
+
+
+    public static void main(String[] args) throws Exception {
+        Scanner scn = new Scanner(System.in);
+
+        int n = scn.nextInt();
+
+        int arr[] = new int[n];
+        for(int i = 0 ; i < n ; i++){
+            arr[i] = scn.nextInt();
+        }
+
+        System.out.println(LongestBitonicSequence(arr));
+    }
+
+}

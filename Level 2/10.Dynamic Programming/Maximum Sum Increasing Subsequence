@@ -1,0 +1,49 @@
+import java.io.*;
+import java.util.*;
+
+public class Main {
+    
+    
+    public static int solution(int arr[])  
+	{  
+	    int n=arr.length;
+        int dp[]=new int[n];
+        for(int i=0;i<n;i++){
+            int max=0;
+            int idx=-1;
+            for(int j=i-1;j>=0;j--){
+                if(arr[j]<=arr[i]){
+                    max=Math.max(max,dp[j]);
+                    idx=j;
+                }
+            }
+            if(idx!=-1){
+                dp[i]=max+arr[i];  
+            }else{
+                dp[i]=arr[i];
+            }
+            
+        }
+        
+        int maxsum=0;
+        for(int i:dp){
+            // System.out.println(i);
+            maxsum=Math.max(i,maxsum);
+        }
+        return maxsum;
+	}  
+
+    public static void main(String[] args) throws Exception {
+        Scanner scn = new Scanner(System.in);
+
+        int n = scn.nextInt();
+
+        int arr[] = new int[n];
+        for(int i = 0 ; i < n ; i++){
+            arr[i] = scn.nextInt();
+        }
+
+        System.out.println(solution(arr));
+    }
+
+}

@@ -1,0 +1,33 @@
+import java.io.*;
+import java.util.*;
+
+public class Main {
+
+    public static void main(String[] args) throws Exception {
+        Scanner sc=new Scanner(System.in);
+        int n=sc.nextInt();
+        int m=n;
+        int nums[]=new int[n];
+        int l=0;
+        while(m-->0){
+            nums[l]=sc.nextInt();
+            l++;
+        }
+        int dp[]=new int[n];
+        for(int i=0;i<n;i++){
+            int max=0;
+            for(int j=i-1;j>=0;j--){
+                if(nums[j]<nums[i]){
+                    max=Math.max(max,dp[j]);
+                }
+            }
+            dp[i]=max+1;
+        }
+        int max=0;
+        for(int i:dp){
+            max=Math.max(i,max);
+        }
+        System.out.println(max);
+    }
+
+}
