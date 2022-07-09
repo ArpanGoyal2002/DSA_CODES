@@ -1,0 +1,30 @@
+import java.io.*;
+import java.util.*;
+
+public class Main {
+
+	public static int solution(int n){
+		int[] arr=new int[n+1];
+        if(n==1)return 1;
+        arr[1]=1;
+        arr[2]=2;
+        for(int i=3;i<n+1;i++){
+            int min=Integer.MAX_VALUE;
+            for(int j=1;j*j<=i;j++){
+                int diff=i-(j*j);
+                min=Math.min(min,arr[diff]);
+            }
+            arr[i]=min+1;
+        }
+        return arr[n];
+	}
+
+	public static void main(String[] args) {
+		Scanner scn = new Scanner(System.in);
+		int n = scn.nextInt();
+		System.out.println(solution(n));
+	}
+
+
+	
+}

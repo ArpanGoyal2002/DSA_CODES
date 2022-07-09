@@ -1,0 +1,62 @@
+/*
+class Item {
+    int value, weight;
+    Item(int x, int y){
+        this.value = x;
+        this.weight = y;
+    }
+}
+*/
+
+class Pair implements Comparable <Pair> {
+    int value, weight;
+    double frac;
+    Pair(int x, int y,double frac){
+        this.value = x;
+        this.weight = y;
+        this.frac=frac;
+    }
+    
+    public int compareTo(Pair o){
+        
+        if(this.frac>o.frac){
+           return -1; 
+        }else if(this.frac<o.frac){
+            return 1;
+        }else{
+            return 0;
+        }
+    }
+}
+
+
+class Solution
+{
+    //Function to get the maximum total value in the knapsack.
+    double fractionalKnapsack(int W, Item arr[], int n) 
+    {
+        PriorityQueue<Pair> q=new PriorityQueue<>();
+        int i=0;
+        while(i<n){
+            q.add(new Pair(arr[i].value,arr[i].weight,(double)((double)arr[i].value/(double)arr[i].weight)));
+            i++;
+        }
+        double weight=0;
+        while(q.size()>0){
+            Pair tmp=q.remove();
+            int value=tmp.value,weight1=tmp.weight;
+            double frac=tmp.frac;
+            double total=0;
+            if(W==0)break;
+            if(weight1<=W){
+                weight+=frac*(double)(weight1);
+                W-=weight1;
+            }else{
+                weight+=frac*(double)(W);
+                W=0;
+            }
+            // System.out.println(value+" "+weight1+" "+weight+" "+frac);
+        }
+        return weight;
+    }
+}
