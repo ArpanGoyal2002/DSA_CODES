@@ -1,0 +1,31 @@
+class Solution
+{
+    //Function to find the nth catalan number.
+    public static BigInteger findCatalan(int n)
+    {
+        BigInteger[] arr=new BigInteger[n+1];
+        arr[0]=BigInteger.ONE;
+        arr[1]=BigInteger.ONE;
+        for(int k=2;k<=n;k++){
+            int i=0;
+            int j=k-1;
+            BigInteger sum=BigInteger.ZERO;
+            while(i<j){
+                BigInteger mul=arr[i].multiply(arr[j]);
+                mul=BigInteger.TWO.multiply(mul);
+                sum=sum.add(mul);
+                // System.out.println(mul+" "+sum);
+                i++;
+                j--;
+            }
+            if(i==j){
+                sum=sum.add(arr[i].multiply(arr[j]));
+            }
+            arr[k]=BigInteger.ZERO;
+            arr[k]=arr[k].add(sum);
+            // System.out.println(arr[k]);
+        }
+        return arr[n];
+    }
+}
+
