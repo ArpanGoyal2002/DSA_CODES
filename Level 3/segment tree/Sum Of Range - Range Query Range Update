@@ -1,0 +1,116 @@
+import java.io.*;
+import java.util.*;
+
+public class Main {
+
+  public static class SegmentTree {
+      
+    int build(int node,int l,int r,int arr[]){
+        if(l==r){
+            tree[node]=arr[l];
+            return tree[node];
+        }else{
+            int mid=(l+r)/2;
+            tree[node]=build(node*2+1,l,mid,arr)+build(node*2+2,mid+1,r,arr);     
+            return tree[node];
+        }
+    }
+     
+    int tree[],lazy[],arrc[];
+    
+    SegmentTree(int arr[]) {
+        arrc=arr;
+        tree=new int[arr.length*4];
+        lazy=new int[arr.length*4];
+        build(0,0,arr.length-1,arr);
+    }
+    
+    private void propagate(int node,int start,int end){
+        if(start==end){
+            tree[node]+=lazy[node];
+            arrc[start]+=lazy[node];
+            lazy[node]=0;
+        }else{
+            tree[node]+=(end-start+1)*lazy[node];
+            lazy[node*2+1]+=lazy[node];
+            lazy[node*2+2]+=lazy[node];
+            lazy[node]=0;
+        }
+    }
+
+    void update(int l, int r, int val) {
+         updateh(0,0,arrc.length-1,l,r,val);
+
+    }
+    void updateh(int node,int start,int end,int l,int r,int val){
+        propagate(node,start,end);
+        if(end<l||r<start)return;
+        if(start==end){
+            tree[node]+=val;
+        }else if(l<=start&&end<=r){
+            lazy[node]+=val;
+            propagate(node,start,end);
+        }else{
+            int mid=(start+end)/2;
+            updateh(node*2+1,start,mid,l,r,val);
+            updateh(node*2+2,mid+1,end,l,r,val);
+            tree[node]=tree[node*2+1]+tree[node*2+2];
+        }
+    }
+    
+    
+    int query(int l, int r) { return quer(0,0,tree.length/4-1,l,r); }
+    
+    int quer(int node,int start,int end,int l,int r){
+        if(end<l||start>r){
+            return 0;
+        }
+                propagate(node,start,end);
+
+        if(start==end){
+            return tree[node];
+        }else if(start>=l&&end<=r){
+            return tree[node];
+        }else{
+            int mid=(start+end)/2;
+            return quer(node*2+1,start,mid,l,r)+quer(node*2+2,mid+1,end,l,r);
+        }
+    }
+
+  }
+
+  public static void main(String[] args) throws Exception {
+    BufferedReader read = new BufferedReader(new InputStreamReader(System.in));
+
+    int n = Integer.parseInt(read.readLine());
+    int arr[] = new int[n];
+
+    for (int i = 0; i < n; i++) {
+      arr[i] = Integer.parseInt(read.readLine());
+    }
+
+    SegmentTree obj = new SegmentTree(arr);
+
+    int q = Integer.parseInt(read.readLine());
+
+    StringBuilder out = new StringBuilder();
+    while (q-- > 0) {
+      String[]inp = read.readLine().split(" ");
+
+      int t = Integer.parseInt(inp[0]);
+      int l = Integer.parseInt(inp[1]);
+      int r = Integer.parseInt(inp[2]);
+
+      if (t == 0) {
+        long ans = obj.query(l, r);
+        out.append(ans + "\n");
+      } else {
+        int val = Integer.parseInt(inp[3]);
+        obj.update(l, r, val);
+      }
+    }
+
+    System.out.println(out);
+  }
+
+}

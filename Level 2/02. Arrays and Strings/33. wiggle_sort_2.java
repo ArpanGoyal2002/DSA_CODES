@@ -8,7 +8,7 @@ class Solution {
         //odd indexes
         int i = 1;
         int k = n-1;
-        
+                
         while(i < nums.length) {
             res[i] = nums[k];
             i += 2;

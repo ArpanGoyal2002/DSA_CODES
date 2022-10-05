@@ -1,0 +1,33 @@
+class Solution {
+    public int stoneGameVII(int[] stones) {
+        int n=stones.length;
+        int dp[][]=new int[n][n];
+        int sum=0;
+        for(int i:stones){
+            sum+=i;
+        }
+        return helper(dp,stones,0,n-1,sum);
+    }
+    
+    public int helper(int[][] dp,int[] stones,int st,int end,int sum){
+        if(st>=end)return 0;
+        else if(st+1==end){
+            dp[st][end]=Math.max(stones[st],stones[end]);
+            return Math.max(stones[st],stones[end]);
+        }
+        
+        int fi,ei;
+        if(dp[st+1][end]!=0){
+            fi=sum-stones[st]-dp[st+1][end];
+        }else{
+            fi=sum-stones[st]-helper(dp,stones,st+1,end,sum-stones[st]);
+        }
+        if(dp[st][end-1]!=0){
+            ei=sum-stones[end]-dp[st][end-1];
+        }else{
+            ei=sum-stones[end]-helper(dp,stones,st,end-1,sum-stones[end]);
+        }
+        dp[st][end]=Math.max(fi,ei);
+        return Math.max(fi,ei);
+    }
+}

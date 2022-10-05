@@ -1,6 +1,6 @@
 import java.util.*;
-
-public class Main {
+import java.io.*;
+public class wiggle_sort_1{
 
     // ~~~~~~~~~~~~~~User Section~~~~~~~~~~~~~~
     public static void wiggleSort(int[] arr) {
